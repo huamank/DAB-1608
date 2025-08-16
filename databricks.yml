@@ -3,49 +3,14 @@ bundle:
   workspace:
     root_path: /Shared/${bundle.name}
 
-# 👇 Declaración correcta de variables (como mapas con default)
-variables:
-  cluster_policy_id:
-    default: ""
-  spark_version:
-    default: "14.3.x-scala2.12"
-  node_type_id:
-    default: "Standard_DS3_v2"
-  num_workers:
-    default: 1
-  workspace_host:
-    default: ""
+include:
+  - resources/*.yml
 
+# 👇 Declaración correcta de variables (como mapas con default)
 targets:
   dev:
     workspace:
-      root_path: /Shared/live/dev
-    variables:
-      num_workers: 1        # override solo para dev
+      root_path: /Shared/GitHub/dev       # override solo para dev
   prod:
     workspace:
-      root_path: /Shared/live/prd
-    variables:
-      num_workers: 1        # override para prod
-  
-
-resources:
-  jobs:
-    etl_hola_mundo:
-      name: ${bundle.name} - ETL Job
-      job_clusters:
-        - job_cluster_key: etl_cluster
-          new_cluster:
-            spark_version: ${var.spark_version}
-            node_type_id: ${var.node_type_id}
-            num_workers: ${var.num_workers}
-            # policy_id: ${var.cluster_policy_id}   # si usas policies
-      tasks:
-        - task_key: run_etl
-          job_cluster_key: etl_cluster
-          notebook_task:
-            notebook_path: notebooks/HolaMundo.ipynb
-
-
-
-            
+      root_path: /Shared/GitHub/prd
